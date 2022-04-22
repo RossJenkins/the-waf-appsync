@@ -1,0 +1,1 @@
+// adds handler for event containing "name", returns "Hello, ${name}!"

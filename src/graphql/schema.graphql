@@ -1,0 +1,7 @@
+type Query {
+    messages: MessagesQuery!
+}
+
+type MessagesQuery {
+    welcomeMessage(name: String!): String!
+}
