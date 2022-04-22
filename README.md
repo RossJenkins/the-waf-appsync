@@ -1,29 +1,7 @@
-# README #
+# AWS WAF Demo #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This repo has a template for setting up an AWS WAF in front of your application using CDK, applying both a Managed Ruleset and some custom rules (inc. geo-restricting the content, so the sneaky Russians cannot access it).
 
-### What is this repository for? ###
+For this example, we'll be deploying the WAF in front of an AWS AppSync GraphQL API, serving requests to a dummy API via AWS Lambda, since we like to serverless all the things! 
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+Also, there's already a [CDK Pattern](https://github.com/cdk-patterns/serverless/tree/main/the-waf-apigateway) existing for deploying WAF with API Gateway + Lambda, so I thought it might be useful to do one with AppSync.
