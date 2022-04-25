@@ -1,7 +1,7 @@
 import {Stack} from "aws-cdk-lib";
 import {Construct} from "constructs";
 import {CfnApiKey, CfnDataSource, CfnGraphQLApi, CfnGraphQLSchema, CfnResolver} from "aws-cdk-lib/aws-appsync";
-import * as fs from "fs";
+import {readFileSync} from "fs";
 import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs";
 import {Runtime} from "aws-cdk-lib/aws-lambda";
 import {CfnWebACL, CfnWebACLAssociation} from "aws-cdk-lib/aws-wafv2";
@@ -19,7 +19,7 @@ export class AppSyncStack extends Stack {
 
     private readonly schema = new CfnGraphQLSchema(this, "graphql-api-schema", {
         apiId: this.api.attrApiId,
-        definition: fs.readFileSync("../graphql/schema.graphql").toString()
+        definition: readFileSync("../graphql/schema.graphql").toString()
     });
 
     // Add lambda, plus the required datasource and resolver
@@ -84,6 +84,10 @@ export class AppSyncStack extends Stack {
     })
 
     constructor(scope: Construct) {
-        super(scope, "AppSyncStack");
+        super(scope, "AppSyncStack", {
+            env: {
+                region: "eu-west-1"
+            }
+        });
     }
 }
