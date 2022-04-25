@@ -19,12 +19,12 @@ export class AppSyncStack extends Stack {
 
     private readonly schema = new CfnGraphQLSchema(this, "graphql-api-schema", {
         apiId: this.api.attrApiId,
-        definition: readFileSync("../graphql/schema.graphql").toString()
+        definition: readFileSync("./src/graphql/schema.graphql").toString()
     });
 
     // Add lambda, plus the required datasource and resolver
     private readonly lambda = new NodejsFunction(this, "lambda-id", {
-        entry: "../lambda/index.ts",
+        entry: "./src/lambda/index.ts",
         handler: "handler",
         functionName: "lambda-function-name",
         runtime: Runtime.NODEJS_14_X,
