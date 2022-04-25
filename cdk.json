@@ -1,0 +1,9 @@
+{
+  "app": "yarn ts-node src/Main.ts",
+  "watch": {
+    "include": [
+      "src/**",
+      "../lambdas/packages/**/dist/*"
+    ]
+  }
+}
