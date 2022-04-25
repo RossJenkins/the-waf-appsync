@@ -18,14 +18,15 @@
     "codegen": "yarn graphql-codegen --config ./src/config/graphql-codegen.yml"
   },
   "dependencies": {
-    "@aws-cdk/aws-wafv2": "^1.152.0",
-    "@aws-cdk/core": "^1.152.0",
-    "@types/node": "^17.0.25",
+    "aws-cdk-lib": "^2.21.1",
+    "constructs": "^10.0.125",
     "typescript": "^4.6.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/typescript-resolvers": "^2.6.1",
+    "@types/aws-lambda": "^8.10.95",
+    "@types/node": "^17.0.25",
     "graphql": "^16.3.0",
     "ts-node": "^10.7.0"
   }
