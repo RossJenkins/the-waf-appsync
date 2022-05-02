@@ -11,6 +11,7 @@
     "lint": "yarn eslint --max-warnings=0 \"**/*.ts\"",
     "test": "echo 'Test's skipped for now as we don't have any, to reactivate replace echo with just `jest`'",
     "synth": "yarn cdk synth --verbose",
+    "bootstrap": "yarn cdk bootstrap",
     "deploy": "yarn cdk deploy",
     "destroy": "yarn cdk destroy",
     "diff": "yarn cdk diff",
