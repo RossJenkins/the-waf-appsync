@@ -14,19 +14,14 @@ export type Scalars = {
   Float: number;
 };
 
-export type MessagesQuery = {
-  __typename?: 'MessagesQuery';
+export type Query = {
+  __typename?: 'Query';
   welcomeMessage: Scalars['String'];
 };
 
 
-export type MessagesQueryWelcomeMessageArgs = {
+export type QueryWelcomeMessageArgs = {
   name: Scalars['String'];
-};
-
-export type Query = {
-  __typename?: 'Query';
-  messages: MessagesQuery;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -100,7 +95,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  MessagesQuery: ResolverTypeWrapper<MessagesQuery>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
 }>;
@@ -108,22 +102,15 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
-  MessagesQuery: MessagesQuery;
   Query: {};
   String: Scalars['String'];
 }>;
 
-export type MessagesQueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessagesQuery'] = ResolversParentTypes['MessagesQuery']> = ResolversObject<{
-  welcomeMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessagesQueryWelcomeMessageArgs, 'name'>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  messages?: Resolver<ResolversTypes['MessagesQuery'], ParentType, ContextType>;
+  welcomeMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<QueryWelcomeMessageArgs, 'name'>>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
-  MessagesQuery?: MessagesQueryResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 }>;
 
