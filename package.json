@@ -6,7 +6,7 @@
   "author": "Ross Jenkins",
   "license": "MIT",
   "scripts": {
-    "build": "yarn checks && yarn graphql:merge && yarn synth",
+    "build": "yarn checks && yarn codegen && yarn synth",
     "checks": "yarn lint && yarn test",
     "lint": "yarn eslint --max-warnings=0 \"**/*.ts\"",
     "test": "echo 'Test's skipped for now as we don't have any, to reactivate replace echo with just `jest`'",
