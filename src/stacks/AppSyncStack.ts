@@ -12,6 +12,7 @@ export class AppSyncStack extends Stack {
     private readonly api = new CfnGraphQLApi(this, "graphql-api-id", {
         name: "graphql-api-name",
         authenticationType: "API_KEY",
+        xrayEnabled: true
     });
 
     private readonly apiKey = new CfnApiKey(this, "graphql-api-key", {
