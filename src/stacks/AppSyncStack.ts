@@ -24,33 +24,47 @@ export class AppSyncStack extends Stack {
     });
 
     // Add lambda, plus the required datasource and resolver, as well as the lambda:InvokeFunction IAM Role
-    private readonly invokeLambdaRole = new Role(this, "Role", {
+    private readonly invokeLambdaRole = new Role(this, "AppSync-InvokeLambdaRole", {
         assumedBy: new ServicePrincipal("appsync.amazonaws.com"),
     });
 
-    private readonly lambda = new NodejsFunction(this, "lambda-id", {
+    private readonly messagesLambdaFunction = new NodejsFunction(this, "messages-lambda-id", {
         entry: "./src/lambda/index.ts",
         handler: "handler",
         functionName: "lambda-function-name",
         runtime: Runtime.NODEJS_14_X,
     });
 
-    private readonly lambdaDataSource = new CfnDataSource(this, "welcomeMessage-datasource", {
+    private readonly messagesDataSource = new CfnDataSource(this, "messages-datasource", {
         apiId: this.api.attrApiId,
         // Note: property 'name' cannot include hyphens
-        name: "WelcomeMessageDataSource",
+        name: "MessagesDataSource",
         type: "AWS_LAMBDA",
         lambdaConfig: {
-            lambdaFunctionArn: this.lambda.functionArn
+            lambdaFunctionArn: this.messagesLambdaFunction.functionArn
         },
         serviceRoleArn: this.invokeLambdaRole.roleArn
     });
 
-    private readonly lambdaResolver = new CfnResolver(this, "welcomeMessage-resolver", {
+    private readonly messagesResolver = new CfnResolver(this, "messages-resolver", {
         apiId: this.api.attrApiId,
         typeName: "Query",
+        fieldName: "messages",
+        dataSourceName: this.messagesDataSource.name,
+    });
+
+    private readonly welcomeMessageResolver = new CfnResolver(this, "welcomeMessage-resolver", {
+        apiId: this.api.attrApiId,
+        typeName: "MessageQuery",
         fieldName: "welcomeMessage",
-        dataSourceName: this.lambdaDataSource.name,
+        dataSourceName: this.messagesDataSource.name,
+    });
+
+    private readonly farewellMessageResolver = new CfnResolver(this, "farewellMessage-resolver", {
+        apiId: this.api.attrApiId,
+        typeName: "MessageQuery",
+        fieldName: "farewellMessage",
+        dataSourceName: this.messagesDataSource.name,
     });
 
     // Add all the waf stuff
@@ -98,13 +112,15 @@ export class AppSyncStack extends Stack {
             }
         });
 
-        // Ensure that the lambda resolver is created after the schema.
-        this.lambdaResolver.addDependsOn(this.schema);
+        // Ensure that the lambda resolvers are created after the schema.
+        this.messagesResolver.addDependsOn(this.schema);
+        this.welcomeMessageResolver.addDependsOn(this.schema);
+        this.farewellMessageResolver.addDependsOn(this.schema);
 
         // Ensure that AppSync is able to invoke lambdas
         this.invokeLambdaRole.addToPolicy(new PolicyStatement({
             effect: Effect.ALLOW,
-            resources: [this.lambda.functionArn],
+            resources: [this.messagesLambdaFunction.functionArn],
             actions: ["lambda:InvokeFunction"]
         }))
     }

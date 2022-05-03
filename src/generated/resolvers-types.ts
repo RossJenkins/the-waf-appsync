@@ -14,14 +14,25 @@ export type Scalars = {
   Float: number;
 };
 
-export type Query = {
-  __typename?: 'Query';
+export type MessageQuery = {
+  __typename?: 'MessageQuery';
+  farewellMessage: Scalars['String'];
   welcomeMessage: Scalars['String'];
 };
 
 
-export type QueryWelcomeMessageArgs = {
+export type MessageQueryFarewellMessageArgs = {
   name: Scalars['String'];
+};
+
+
+export type MessageQueryWelcomeMessageArgs = {
+  name: Scalars['String'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  messages: MessageQuery;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -95,6 +106,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  MessageQuery: ResolverTypeWrapper<MessageQuery>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
 }>;
@@ -102,15 +114,23 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
+  MessageQuery: MessageQuery;
   Query: {};
   String: Scalars['String'];
 }>;
 
+export type MessageQueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageQuery'] = ResolversParentTypes['MessageQuery']> = ResolversObject<{
+  farewellMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessageQueryFarewellMessageArgs, 'name'>>;
+  welcomeMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MessageQueryWelcomeMessageArgs, 'name'>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  welcomeMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<QueryWelcomeMessageArgs, 'name'>>;
+  messages?: Resolver<ResolversTypes['MessageQuery'], ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  MessageQuery?: MessageQueryResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 }>;
 
