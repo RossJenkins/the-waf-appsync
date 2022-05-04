@@ -1,1 +1,0 @@
-// Stack containing: WAF + common rules + example of a custom rule
