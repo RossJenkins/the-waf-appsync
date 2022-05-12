@@ -4,6 +4,7 @@ import {MessageQueryFarewellMessageArgs, MessageQueryWelcomeMessageArgs} from ".
 type QueryArgs = MessageQueryArgs;
 type MessageQueryArgs = MessageQueryWelcomeMessageArgs | MessageQueryFarewellMessageArgs;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handler: AppSyncResolverHandler<QueryArgs, any> = async (event) => {
     switch (event.info.parentTypeName) {
         case "Query":

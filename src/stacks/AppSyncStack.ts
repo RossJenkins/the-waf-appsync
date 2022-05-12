@@ -4,19 +4,16 @@ import {CfnApiKey, CfnDataSource, CfnGraphQLApi, CfnGraphQLSchema, CfnResolver} 
 import {readFileSync} from "fs";
 import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs";
 import {Runtime} from "aws-cdk-lib/aws-lambda";
-import {CfnWebACL, CfnWebACLAssociation} from "aws-cdk-lib/aws-wafv2";
 import {Effect, PolicyStatement, Role, ServicePrincipal} from "aws-cdk-lib/aws-iam";
 
+// Creates AppSync API, with schema, and Lambda resolver as datasource.
 export class AppSyncStack extends Stack {
+
     // Add AppSync GraphQL API, generate an API key for use and a schema
-    private readonly api = new CfnGraphQLApi(this, "graphql-api-id", {
+    readonly api = new CfnGraphQLApi(this, "graphql-api-id", {
         name: "graphql-api-name",
         authenticationType: "API_KEY",
         xrayEnabled: true
-    });
-
-    private readonly apiKey = new CfnApiKey(this, "graphql-api-key", {
-        apiId: this.api.attrApiId,
     });
 
     private readonly schema = new CfnGraphQLSchema(this, "graphql-api-schema", {
@@ -68,49 +65,16 @@ export class AppSyncStack extends Stack {
         dataSourceName: this.messagesDataSource.name,
     });
 
-    // Add all the waf stuff
-    private readonly webAcl = new CfnWebACL(this, "web-acl", {
-        defaultAction: {
-            allow: {}
-        },
-        scope: "REGIONAL",
-        visibilityConfig: {
-            cloudWatchMetricsEnabled: true,
-            metricName: "webACL",
-            sampledRequestsEnabled: true
-        },
-        rules: [
-            {
-                name: "AWS-AWSManagedRulesCommonRuleSet",
-                priority: 1,
-                overrideAction: {none: {}},
-                statement: {
-                    managedRuleGroupStatement: {
-                        name: "AWSManagedRulesCommonRuleSet",
-                        vendorName: "AWS",
-                        excludedRules: [{name: "SizeRestrictions_BODY"}]
-                    }
-                },
-                visibilityConfig: {
-                    cloudWatchMetricsEnabled: true,
-                    metricName: "awsCommonRules",
-                    sampledRequestsEnabled: true
-                }
-            },
-        ]
-    });
-
-    private readonly wafGatewayAssociation = new CfnWebACLAssociation(this, "web-acl-association", {
-        webAclArn: this.webAcl.attrArn,
-        resourceArn: this.api.attrArn
-    })
-
     constructor(scope: Construct) {
         super(scope, "AppSyncStack", {
             env: {
                 account: process.env.CDK_DEFAULT_ACCOUNT,
                 region: process.env.CDK_DEFAULT_REGION
             }
+        });
+
+        new CfnApiKey(this, "graphql-api-key", {
+            apiId: this.api.attrApiId,
         });
 
         // Ensure that the lambda resolvers are created after the schema.
@@ -125,4 +89,5 @@ export class AppSyncStack extends Stack {
             actions: ["lambda:InvokeFunction"]
         }))
     }
+
 }
