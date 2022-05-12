@@ -12,7 +12,7 @@ export const handler: AppSyncResolverHandler<QueryArgs, any> = async (event) => 
         case "MessageQuery":
             return resolveMessageQuery(event);
         default:
-            throw `Unexpected query "${event.info.parentTypeName}" found.`
+            throw `Unexpected query "${event.info.parentTypeName}" found.`;
     }
 };
 
@@ -23,14 +23,14 @@ const resolveMessageQuery = (event: AppSyncResolverEvent<MessageQueryArgs>) => {
         case "farewellMessage":
             return resolveFarewellMessage(event);
         default:
-            throw `Unexpected query "${event.info.parentTypeName}.${event.info.fieldName}" found.`
+            throw `Unexpected query "${event.info.parentTypeName}.${event.info.fieldName}" found.`;
     }
-}
+};
 
 const resolveWelcomeMessage = (event: AppSyncResolverEvent<MessageQueryWelcomeMessageArgs>) => {
     return `Hello, ${event.arguments.name}!`;
-}
+};
 
 const resolveFarewellMessage = (event: AppSyncResolverEvent<MessageQueryFarewellMessageArgs>) => {
     return `Goodbye, ${event.arguments.name}!`;
-}
+};

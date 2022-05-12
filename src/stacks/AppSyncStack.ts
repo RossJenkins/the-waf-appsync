@@ -87,7 +87,7 @@ export class AppSyncStack extends Stack {
             effect: Effect.ALLOW,
             resources: [this.messagesLambdaFunction.functionArn],
             actions: ["lambda:InvokeFunction"]
-        }))
+        }));
     }
 
 }
