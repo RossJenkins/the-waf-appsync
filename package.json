@@ -9,7 +9,7 @@
     "build": "yarn checks && yarn codegen && yarn synth",
     "checks": "yarn lint && yarn test",
     "lint": "yarn eslint --max-warnings=0 \"**/*.ts\"",
-    "test": "echo 'Test's skipped for now as we don't have any, to reactivate replace echo with just `jest`'",
+    "test": "echo 'No tests exist for this demo repo, skipping",
     "synth": "yarn cdk synth --verbose",
     "bootstrap": "yarn cdk bootstrap",
     "deploy": "yarn cdk deploy",

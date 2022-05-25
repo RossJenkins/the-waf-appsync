@@ -21,7 +21,7 @@ export class AppSyncStack extends Stack {
         definition: readFileSync("./src/graphql/schema.graphql").toString(),
     });
 
-    // Add lambda, plus the required datasource and resolver, as well as the lambda:InvokeFunction IAM Role
+    // Add lambda, plus the required datasource and resolvers, as well as create an invoke lambda role for AppSync
     private readonly invokeLambdaRole = new Role(this, "AppSync-InvokeLambdaRole", {
         assumedBy: new ServicePrincipal("appsync.amazonaws.com"),
     });
@@ -77,12 +77,12 @@ export class AppSyncStack extends Stack {
             apiId: this.api.attrApiId,
         });
 
-        // Ensure that the lambda resolvers are created after the schema.
+        // Ensures that the resolvers are created after the schema.
         this.messagesResolver.addDependsOn(this.schema);
         this.welcomeMessageResolver.addDependsOn(this.schema);
         this.farewellMessageResolver.addDependsOn(this.schema);
 
-        // Ensure that AppSync is able to invoke lambdas
+        // Ensures that AppSync is able to invoke the lambda function.
         this.invokeLambdaRole.addToPolicy(new PolicyStatement({
             effect: Effect.ALLOW,
             resources: [this.messagesLambdaFunction.functionArn],
