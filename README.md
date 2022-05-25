@@ -1,11 +1,19 @@
-# AWS WAF Demo #
+# The WAF AppSync (CDK v2) #
 
-This repo has a template for setting up an AWS WAF in front of a basic AWS application using CDK v2. 
+This repo contains a demo AWS CDK v2 project, used to deploy an AWS AppSync API behind AWS WAF.
 
-Including applying both a Managed Ruleset, and an example of a custom rule: geo-restricting access to the content, so the sneaky Russians cannot access it.
+It includes the CDK code, as well as the Lambda code used as a resolver, and the GraphQL schema used to a this simple API. This can be used as a starting point for building your own AppSync API using TypeScript!
 
-For this example, we'll be deploying the WAF in front of an AWS AppSync GraphQL API, serving requests to a dummy API via AWS Lambda, since we like to serverless all the things! 
+Additionally, the WAF stack included here can be altered and used as a template for deploying any other web application resource supported by WAF, by simply passing your desired resource's ARN to the stack's constructor.
 
-Also, there's already a [CDK Pattern](https://github.com/cdk-patterns/serverless/tree/main/the-waf-apigateway) existing for deploying WAF with API Gateway + Lambda, so I thought it might be useful to do one with AppSync.
+The Web ACL created as part of the WAF stack is used to apply an AWS Managed Ruleset to protect against the most common web exploits, and can easily be extended to include other managed rulesets as well as custom rules. 
 
-If you wish to deploy this to your own account as a starting point, first make sure that you have logged into AWS SSO & set your default profile correctly in `~/.aws/credentials` before running `yarn bootstrap` if you have not yet bootstrapped your account in the region you wish to deploy.
+## Deployment ##
+
+If you wish to deploy this application to your own account as a starting point, and it is your first time using AWS CDK, then I'd recommend first checking out [getting started with the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html). 
+This should give you some steps to follow in order to install the relevant packages, and some context on bootstrapping your environment.
+After installing the AWS CLI, you should run the following steps:
+
+* First, run `aws configure` to ensure that your AWS credentials have been set in the CLI. 
+* Next, if your account has not been bootstrapped for your desired deployment region, run `yarn bootstrap`.
+* Then simply run `yarn deploy --all` to start the deployment.
